@@ -1,0 +1,34 @@
+adapter:
+  context_dim: 768
+  audio_dim: 1024
+
+train:
+  bs: 6
+  epoch: 151
+  projector_lr: 1.0e-04
+  gate_and_adaptation_prompts_lr: 1.0e-04
+  reg_weight: 0.02
+  clip_loss_weight: 0.1
+  drop_text: 0.5
+  num_worker: 5
+  shuffle_data: True
+
+  linear_scheduler_scale_factor: 10
+  # linear_scheduler_warmup_steps: 10000
+  linear_scheduler_number_iter: 20
+
+  projector_transformer_layer_count: 4
+
+  audio_train_path: ldm/data/base_dataset/audio_train_landscape.txt
+  audio_val_path: ldm/data/base_dataset/audio_val_landscape.txt
+  audio_duration: 10
+
+  save_every_n_epoch: 50
+
+  sample_path: "experiments/first_stage_contrastive/samples"
+  clap_weight: "CLAP/clap_weight/CLAP_weights_2022.pth"
+  ckpt_dir: "/kuacc/users/bbiner21/share_folder/audio_checkpoints/first_stage_contrastive/"
+
+wandb:
+  project_name: "first_stage_contrastive"
+  experiment_name: "first_try"
