@@ -265,14 +265,12 @@ class ResBlock(TimestepBlock):
         :return: an [N x C x ...] Tensor of outputs.
         """
         if self.injection_mode:
-            # print("inside checkpoint injection")
             return checkpoint(
                 self._forward, (x, emb, out_layers_injected), self.parameters(), self.use_checkpoint  # resblokc , 
             )
         else:
-            # print("inside checkpoint no injection")
             return checkpoint(
-                self._forward, (x, emb), self.parameters(), self.use_checkpoint  # resblokc , 
+                self._forward, (x, emb), self.parameters(), self.use_checkpoint  # 
             )
 
 
@@ -300,9 +298,7 @@ class ResBlock(TimestepBlock):
         else:
             if out_layers_injected is not None:
                 h = out_layers_injected
-                # print("feature injection done for out layer")
             else: 
-                # print("feature injection not done for out layer")
                 h = h + emb_out
                 h = self.out_layers(h)
                 
@@ -576,22 +572,8 @@ class UNetModel(nn.Module):
         ds = 1
 
 
-        # input_use_adapter = True
-        # middle_use_adapter = True
-        # output_use_adapter = True
-        
-        ####for visualization
-        # self.input_before_adapter = []
-        # self.input_after_adapter = []
-        # self.middle_before_adapter = []
-        # self.middle_after_adapter = []
-        # self.output_before_adapter = []
-        # self.output_after_adapter = []
-        # self.level_nums = []
-        # self.output_level_nums = []
 
-
-        # HERE SD IMPLEMENTATION DOES NOT GO EACH BLOKC SEPERATELY
+        # HERE SD IMPLEMENTATION DOES NOT GO EACH BLOCK SEPERATELY
         # SOME BLOCKS ARE DEFINED TOGETHER e.g. FIRST TWO RESIDUAL BLOCKS 
         # TO INJECT DIFFERENT LAYER NUMBERS WE COUNT THEM HERE 
 
@@ -625,7 +607,6 @@ class UNetModel(nn.Module):
                         num_heads = ch // num_head_channels
                         dim_head = num_head_channels
                     if legacy:
-                        #num_heads = 1
                         dim_head = ch // num_heads if use_spatial_transformer else num_head_channels
                     layers.append(
                         AttentionBlock(
@@ -835,7 +816,6 @@ class UNetModel(nn.Module):
         
 
         for level, module in enumerate(self.input_blocks):
-            # check if flamingo multiplier is alist
             h = module(h, emb, context, audio_context=audio_context, flamingo_multiplier=flamingo_multiplier)
             hs.append(h)
 

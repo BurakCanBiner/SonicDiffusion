@@ -178,36 +178,6 @@ class CrossAttention(nn.Module):
         self.inner_dim = inner_dim
 
 
-        # HERE WE DEFINE ADAPTATION PROMPTS AND GATING VARIABLE 
-        # GATE IS INITIALIZED AS ZERO
-        # ADAPTER PROMPTS SHAPE IS K, CONTEXT_DIM 
-        # WHICH CORRESPONDS TO K, 768 HERE
-
-
-        # if self.use_adapter :
-            # self.gate = torch.nn.Parameter(torch.zeros(1))
-            # self.adapter_tokens = torch.nn.Parameter(torch.randn(adapter_token_count, context_dim ))
-
-        # # K_V_RESIDUAL APPROACH
-        # if self.use_adapter :
-        #     inner_dim_adapter = 128
-        #     audio_target_dim = 77
-        #     # OUTPUTS ARE B, 77, CH -> WE CAN DIRECTLY ADD TO K AND V PROJECTIONS
-        #     self.adapter_k_res = nn.Sequential(
-        #         nn.Conv1d(1, audio_target_dim, 32, stride=8, bias=True, padding=12),
-        #         nn.GELU(),
-        #         torch.nn.Linear(inner_dim_adapter, inner_dim, bias=True)
-        #     )
-        #     self.adapter_v_res = nn.Sequential(
-        #         nn.Conv1d(1, audio_target_dim, 32, stride=8, bias=True, padding=12),
-        #         nn.GELU(),
-        #         torch.nn.Linear(inner_dim_adapter, inner_dim, bias=True)
-        #     )
-
-
-
-
-#for visualization:
         self.attn = None
         self.q = None
         self.k = None
@@ -238,90 +208,9 @@ class CrossAttention(nn.Module):
         if self.visualize:
             self.q = q
             self.k = k
-#             self.v = v
-            
-#             self.attn = sim
         
-#         q = self.to_q(x)
-#         context = default(context, x)
-
-        ####
-        # THIS IMPLEMENTATION OF THE LLAMA ADAPTER FOLLOWS THE INSTRUCTIONS IN THE PAPER
-        # ONE OTHER WAY OF IMPLEMENTING THIS IS PASSING ADAPTATION PROMPTS FROM PROJECTION MATRICES
-        # WITHOUT ANY SEPARATION. LLAMA SOURCE CODE IS IMPLEMENTED THAT WAY
-        # THEY MUST OUTPUT SAME RESULTS, WE CAN DOUBLE CHECK LATER TO MAKE SURE
-        ####
-
-        
-#         k = self.to_k(context)
         v = self.to_v(context)
 
-        # # # K_V_RESIDUAL APPROACH
-        # # # print(f"q shape is {q.shape} and k {k.shape} and v {v.shape} and x {x.shape}", flush=True)
-        # if self.use_adapter and audio_context is not None:
-        #     residual_k = self.adapter_k_res(audio_context)
-        #     k += residual_k
-        #     v += self.adapter_v_res(audio_context)
-
-
-
-        # HERE WE INJECT NEW TOKENS INTO ATTENTION
-#         if self.use_adapter and audio_context is not None:
-# #             batch_size = x.shape[0]
-
-# #             # adapter_prompts SHAPE HERE IS  K, CONTEXT_DIM -> BS, K, CONTEXT_DIM
-# #             adapter_prompts = self.adapter_tokens.unsqueeze(0).repeat(batch_size, 1, 1)
-
-# #             # AUDUO CONTEXT SHAPE HERE IS, BS, CONTEXT_DIM -> BS, K, CONTEXT_DIM
-# #             audio_context = audio_context.unsqueeze(1).repeat(1, self.adapter_token_count, 1)
-
-
-# #             adapter_prompts = adapter_prompts + audio_context
-
-
-# # #             print("inside audio context cat ")
-            
-# # #             # CONTEXT SHAPE HERE IS BS, (77 + K), CONTEXT_DIM
-# #             context = torch.cat((context, adapter_prompts), 1)
-# #             context = torch.cat((context, audio_context), 1)
-
-#             k_adapter = self.to_k(audio_context)
-#             v_adapter= self.to_v(audio_context)
-#             k_adapter, v_adapter = map(lambda t: rearrange(t, 'b n (h d) -> (b h) n d', h=h), (k_adapter, v_adapter))
-#             sim_adapter = einsum('b i d, b j d -> b i j', q, k_adapter) * self.scale
-
-
-
-#         if exists(mask):
-#             mask = rearrange(mask, 'b ... -> b (...)')
-#             max_neg_value = -torch.finfo(sim.dtype).max
-#             mask = repeat(mask, 'b j -> (b h) () j', h=h)
-#             sim.masked_fill_(~mask, max_neg_value)
-
-#         if self.use_adapter and audio_context is not None :
-# #             adapter_prompt_sim = sim[:,:,self.orig_cond_token_count:]  # LAST K TOKENS TO USE AS ADAPTATION PROMPTS
-# #             sim = sim[:,:,:self.orig_cond_token_count]  # FIRST 77 TOKENS TO USE AS TEXT TOKENS 
-# # #             adapter_attn = self.gate * adapter_prompt_sim.softmax(dim=-1) # WE APPLY GATING MECHANISM HERE 
-# #             adapter_attn = adapter_prompt_sim.softmax(dim=-1) # WE APPLY GATING MECHANISM HERE 
-#             attn_adapter = sim_adapter.softmax(dim=-1) 
-
-        # attention, what we cannot get enough of
-        
-#         if self.use_adapter and audio_context is not None :
-# #             attn = torch.cat((attn, adapter_attn), 2) # WE CONCAT TEXT TOKENS AND ADAPTER TOKENS BACK 
-# #             v_text = v[:,:self.orig_cond_token_count,:]
-# #             v_adapter = v[:,self.orig_cond_token_count:,:]
-            
-#             out_text = einsum('b i j, b j d -> b i d', attn, v)
-#             out_audio = einsum('b i j, b j d -> b i d', attn_adapter, v_adapter)
-
-#             out_adapter = out_text + out_audio
-#             scale_out_norm = torch.norm(out_text)/torch.norm(out_adapter)
-#             print(f" text norm {torch.norm(out_text)} out norm is {torch.norm(out_adapter)} torch audio norm {torch.norm(out_audio)} ")
-            
-#             out = out_adapter * scale_out_norm
-#         else:
-#             out = einsum('b i j, b j d -> b i d', attn, v)
 
         q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> (b h) n d', h=h), (q, k, v))
         sim = einsum('b i d, b j d -> b i j', q, k) * self.scale
@@ -348,15 +237,16 @@ class BasicTransformerBlock(nn.Module):
                                     adapter_token_count=adapter_token_count, visualize=visualize)  # is self-attn if context is none
         
         
-        ## HERE WE DEFINE ANOTHER CROSS-ATTENTION LAYER TO CALCULATE ATTENTION OF AUDIO AND IMAGE -> FLAMINGO APPROACH
+        ## HERE WE DEFINE ANOTHER CROSS-ATTENTION LAYER TO CALCULATE ATTENTION OF AUDIO AND IMAGE 
         self.use_adapter = use_adapter
         self.unet_layer_name = unet_layer_name
         #### dropout for this part: 0.1 for trainig and 0.0 for inference
         if self.use_adapter:
             self.attn_adapter = CrossAttention(query_dim=dim, context_dim=context_dim,
                                         heads=n_heads, dim_head=d_head, dropout=adapter_dropout, use_adapter=use_adapter, 
-                                    adapter_token_count=adapter_token_count)  # is self-attn if context is none
-            ### ANOTHER LAYER NORM FOR OUR ADAPTER -> FLAMINGO APPROACH
+                                    adapter_token_count=adapter_token_count)  # is 
+
+            ### ANOTHER LAYER NORM FOR OUR ADAPTER
             self.norm_adapter = nn.LayerNorm(dim)
             self.gate_adapter = nn.Parameter(torch.tensor([0.]))
         
@@ -371,8 +261,6 @@ class BasicTransformerBlock(nn.Module):
 
     def forward(self, x, context=None, audio_context=None, flamingo_multiplier=1.0, self_attn_q_injected=None,
                  self_attn_k_injected=None, timestep=None):
-
-        #  self_attn_q_injected,  self_attn_k_injected
         
         if self.injection_mode:
             if self_attn_q_injected is not None:
@@ -393,44 +281,17 @@ class BasicTransformerBlock(nn.Module):
         x = self.attn1(self.norm1(x), q_injected=self_attn_q_injected,
                        k_injected=self_attn_k_injected) + x
         
-        # K_V_RESIDUAL APPROACH -> audio context is given to the cross attention
-        # FLAMINGO APPROACH  -> audio context is given as NONE to the cross attention
-        # x = self.attn2(self.norm2(x), context=context, audio_context=audio_context) + x
-        
-        ## -> FLAMINGO APPROACH  
-        x = self.attn2(self.norm2(x), context=context, audio_context=None) + x
-    
 
-        # if timestep is not None:
-        #     print(f"timestep is {timestep}")
-        #     norm_x = torch.norm(x).item()
-        #     with open('logs/norm_x_only_text.txt', 'a') as file:
-        #         # Write content tto the file
-        #         file.write(f"{self.unet_layer_name} -t: {timestep} --> {norm_x}\n")
-        # else:
-        #     print("timestep is None")
+        x = self.attn2(self.norm2(x), context=context, audio_context=None) + x
+
+
 
         if self.use_adapter and audio_context is not None:
             adapter_residual = self.attn_adapter(self.norm_adapter(x), context=audio_context, audio_context=None)*self.gate_adapter.tanh()
-            # self.norm_adapter_residual = torch.norm(adapter_residual).item()
-            # norm_x = torch.norm(x).item()
-            # log norm of adapter residual
             adapter_residual = adapter_residual*flamingo_multiplier
             
-            # if timestep is not None:
-            #     with open('logs/norm_new_ckpt2.txt', 'a') as file:
-            #         # Write content tto the file
-            #         file.write(f"{self.unet_layer_name} -t: {timestep} --> {self.norm_adapter_residual}\n")
-            #     with open('logs/norm_x2.txt', 'a') as file:
-            #         # Write content tto the file
-            #         file.write(f"{self.unet_layer_name} -t: {timestep} --> {norm_x}\n")
-
-            #flamingo_multiplier
-            # adapter_norm  = torch.norm(adapter_residual)
-            # features_norm = torch.norm(x)
             x =  adapter_residual + x
 
-        # *self.gate_adapter.tanh()
         
         x = self.ff(self.norm3(x)) + x
         
