@@ -33,8 +33,8 @@ Pretrained models are available on the following links.
 | :--- | :----------
 |[Landscapes Audio Projector](https://drive.google.com/file/d/1ilIDUjGdScJD4UIG-cq3rKwW9yk5S2In/view?usp=sharing) | -
 |[Greatest Hits Audio Projector ](https://drive.google.com/file/d/1uoOsJcT0bC-_zNDbhcj6iaxLJBN-LFao/view?usp=sharing) |  -
-|[Landscapes Adapter](https://drive.google.com/file/d/1kxYtrg4YQCudxL5f9xmCzOdJRITH5UXB/view?usp=share_link) | -
-|[Greatest Hits Adapter](https://drive.google.com/file/d/1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT/view) | -
+|[Landscapes Adapter](https://drive.google.com/file/d/1lpov3PNiiA8YIebi04DoAHv5gRZfdUP6/view?usp=sharing) | -
+|[Greatest Hits Adapter](https://drive.google.com/file/d/1enZoJ_Uon_mnCI36uEoumujAqPwkweh6/view?usp=sharing) | -
 |[CLAP weights ](https://zenodo.org/records/8378278/files/CLAP_weights_2022.pth?download=1) | -
 
 
