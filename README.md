@@ -5,7 +5,7 @@
 >Official Implementation of SonicDiffusion: Audio-Driven Image Generation and Editing with Pretrained Diffusion Models.
 
 <p align="center">
-<img src="assets/teaser_final.jpeg"/>  
+<img src="assets/teaser_final.png"/>  
 </p>
 
 ## Updates
@@ -31,10 +31,11 @@ Pretrained models are available on the following links.
 
 | Path | Description
 | :--- | :----------
-|[Landscapes Audio Projector](https://drive.google.com/file/d/1ilIDUjGdScJD4UIG-cq3rKwW9yk5S2In/view?usp=sharing) |  should be named ckpts/audio_projector_landscapes.pt
-|[Greatest Hits Audio Projector ](https://drive.google.com/file/d/1uoOsJcT0bC-_zNDbhcj6iaxLJBN-LFao/view?usp=sharing) |  should be named ckpts/audio_projector_gh.pt
-|[Landscapes Adapter](https://drive.google.com/file/d/1kxYtrg4YQCudxL5f9xmCzOdJRITH5UXB/view?usp=share_link) | should be named ckpts/landscape.pt
-|[Greatest Hits Adapter](https://drive.google.com/file/d/1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT/view) | should be named greatest_hits.pt
+|[Landscapes Audio Projector](https://drive.google.com/file/d/1ilIDUjGdScJD4UIG-cq3rKwW9yk5S2In/view?usp=sharing) | -
+|[Greatest Hits Audio Projector ](https://drive.google.com/file/d/1uoOsJcT0bC-_zNDbhcj6iaxLJBN-LFao/view?usp=sharing) |  -
+|[Landscapes Adapter](https://drive.google.com/file/d/1kxYtrg4YQCudxL5f9xmCzOdJRITH5UXB/view?usp=share_link) | -
+|[Greatest Hits Adapter](https://drive.google.com/file/d/1EM87UquaoQmk17Q8d5kYIAHqu0dkYqdT/view) | -
+|[CLAP weights ](https://zenodo.org/records/8378278/files/CLAP_weights_2022.pth?download=1) | -
 
 
 By default, we assume that all models are downloaded and saved to the directory `ckpts`.
