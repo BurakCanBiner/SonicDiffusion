@@ -5,7 +5,7 @@
 >Official Implementation of SonicDiffusion: Audio-Driven Image Generation and Editing with Pretrained Diffusion Models.
 
 <p align="center">
-<img src="assets/teaser_final.png"/>  
+<img src="assets/teaser.png"/>  
 </p>
 
 ## Updates
