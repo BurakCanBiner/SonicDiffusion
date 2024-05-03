@@ -1,6 +1,6 @@
 # Adapted from https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/transformer_2d.py
 
-from dataclasses import dataclassxxtxt
+from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 import torch
