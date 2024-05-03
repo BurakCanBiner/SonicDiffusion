@@ -1,11 +1,11 @@
 # SonicDiffusion: Audio-Driven Image Generation and Editing with Pretrained Diffusion Models
 
-<a href="https://arxiv.org/abs/2405.00878"><img src="https://img.shields.io/badge/arXiv-2307.08397-b31b1b.svg"></a> <a <a href="https://cyberiada.github.io/SonicDiffusion/"><img src="https://img.shields.io/badge/Project_Page-purple"></a>
+<a href="https://arxiv.org/abs/2405.00878"><img src="https://img.shields.io/badge/arXiv-2307.08397-b31b1b.svg"></a> <a href="https://cyberiada.github.io/SonicDiffusion/"><img src="https://img.shields.io/badge/Project_Page-purple"></a>
 
 >Official Implementation of SonicDiffusion: Audio-Driven Image Generation and Editing with Pretrained Diffusion Models.
 
 <p align="center">
-<img src="assets/teaser_final.pdf"/>  
+<img src="assets/teaser_final.jpeg"/>  
 </p>
 
 ## Updates
