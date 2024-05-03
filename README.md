@@ -5,10 +5,7 @@
 >Official Implementation of SonicDiffusion: Audio-Driven Image Generation and Editing with Pretrained Diffusion Models.
 
 <p align="center">
-<img src="assets/teaser_image_v3.jpg"/>  
-<br>
-We present CLIPInverter that enables users to easily perform semantic changes on images using free natural text. Our approach is not specific to a certain category of images and can be applied to many different domains (e.g., human faces, cats, birds) where a pretrained StyleGAN generator exists (top). Our approach specifically gives more accurate results for multi-attribute edits as compared to the prior work (middle). Moreover, as we utilize CLIP’s semantic embedding space, it can also perform manipulations based on reference images without any training or finetuning (bottom).
-</br>
+<img src="assets/teaser_final.pdf"/>  
 </p>
 
 ## Updates
