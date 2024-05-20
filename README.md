@@ -27,7 +27,7 @@ $ pip install -r requirements.txt
 
 ### Pretrained Models
 
-Pretrained models are available on the following links. 
+Pretrained models are available at the following links.
 
 | Path | Description
 | :--- | :----------
