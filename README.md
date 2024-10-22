@@ -27,15 +27,9 @@ $ pip install -r requirements.txt
 
 ### Pretrained Models
 
-Pretrained models are available at the following links.
+Pretrained models are available at the following link.
 
-| Path | Description
-| :--- | :----------
-|[Landscapes Audio Projector](https://drive.google.com/file/d/1ilIDUjGdScJD4UIG-cq3rKwW9yk5S2In/view?usp=sharing) | -
-|[Greatest Hits Audio Projector ](https://drive.google.com/file/d/1uoOsJcT0bC-_zNDbhcj6iaxLJBN-LFao/view?usp=sharing) |  -
-|[Landscapes Adapter](https://drive.google.com/file/d/1lpov3PNiiA8YIebi04DoAHv5gRZfdUP6/view?usp=sharing) | -
-|[Greatest Hits Adapter](https://drive.google.com/file/d/1enZoJ_Uon_mnCI36uEoumujAqPwkweh6/view?usp=sharing) | -
-|[CLAP weights ](https://zenodo.org/records/8378278/files/CLAP_weights_2022.pth?download=1) | -
+https://huggingface.co/spaces/burakcanbiner/SonicDiffusion/tree/main/ckpts
 
 
 By default, we assume that all models are downloaded and saved to the directory `ckpts`.
